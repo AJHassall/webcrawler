@@ -4,7 +4,8 @@
 {% block navbar %}
 <div class="navbar">
     <div class="navbar-header">
-        <a class="navbar-brand" href="/">  Web Scraper
+        <a class="navbar-brand" href="/">
+            Web Scraper
         </a>
     </div>
 </div>
@@ -15,6 +16,15 @@
     <h1>Web Scraper</h1>
 
     <div class="jumbotron">
+        <h2>Scraped Links</h2>
+        <ul class="list-group">
+            {% for link in links %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('webui.page', page_id=link.source_page_id) }}" target="_blank">{{ link.url }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
         <form method="POST">
             <label for="target_url">Enter URL to Scrape:</label><br>
             <input type="text" id="target_url" name="target_url" required><br><br>
@@ -23,7 +33,8 @@
 
         {% if data %}
             <h2>Scraping Results for {{ url }}</h2>
-            <pre>{{ data | tojson(indent=4) }}</pre>  {% elif url %}
+            <pre>{{ data | tojson(indent=4) }}</pre>
+        {% elif url %}
             <p>No data scraped yet for {{ url }}.</p>
         {% else %}
             <p>Enter a URL to begin scraping.</p>

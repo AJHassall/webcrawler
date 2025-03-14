@@ -5,8 +5,8 @@ import time
 from webcrawler.models import Page, Link  # Import your Page and Link models
 from webcrawler.ext.database import db  # Import your database session
 
-MAX_REQUESTS = 50
-REQUEST_DELAY = 1  # Seconds
+MAX_REQUESTS = 10
+REQUEST_DELAY = 0.3  # Seconds
 
 crawled_urls = set()  # Keep track of crawled URLs to avoid duplicates
 total_requests = 0
@@ -51,10 +51,8 @@ def scrape_page(url, base_url=None):
         title = soup.title.text if soup.title else None
         data["title"] = title
 
-        # --- Extract Content (Example) ---
-        # This is a placeholder. You'll need to adapt this
-        # to target the specific content you want on the page.
-        data["content"] = "Example content"
+        # --- Extract Content (HTML) ---
+        data["content"] = str(soup)  # Store the entire HTML content
 
         metadata = {}
         description_tag = soup.find("meta", attrs={"name": "description"})
@@ -73,7 +71,8 @@ def scrape_page(url, base_url=None):
         db.session.commit()
 
         # --- Extract Links and Recursively Crawl ---
-        links = {}
+        # Initialize links as a list here
+        links = []
         for link in soup.find_all("a"):
             href = link.get("href")
             text = link.text.strip()
