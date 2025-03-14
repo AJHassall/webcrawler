@@ -17,13 +17,15 @@
 
     <div class="jumbotron">
         <h2>Scraped Links</h2>
-        <ul class="list-group">
-            {% for link in links %}
-                <li class="list-group-item">
-                    <a href="{{ url_for('webui.page', page_id=link.source_page_id) }}" target="_blank">{{ link.url }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <div style="max-height: 200px; overflow-y: auto;">
+            <ul class="list-group">
+                {% for link in links %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('webui.page', page_id=link.source_page_id) }}" target="_blank">{{ link.url }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
 
         <form method="POST">
             <label for="target_url">Enter URL to Scrape:</label><br>
